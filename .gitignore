@@ -1,0 +1,6 @@
+.env
+node_modules
+build.zip
+tmp
+.DS_Store
+coverage
