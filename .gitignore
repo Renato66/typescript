@@ -1,6 +1,7 @@
 .env
 node_modules
 build.zip
+dist
 tmp
 .DS_Store
 coverage

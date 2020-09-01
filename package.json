@@ -5,6 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "start": "sucrase-node src/index.ts",
+    "build": "yarn tsc -p tsconfig-build.json",
+    "zip": "zip -r -j build.zip dist/*",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:ci": "yarn test --coverage",
     "test:unit": "yarn test --watch -c jest-unit-config.js",
