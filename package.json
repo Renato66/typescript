@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
+    "dev": "sucrase-node dev.ts",
     "start": "sucrase-node src/index.ts",
     "build": "yarn tsc -p tsconfig-build.json",
     "postbuild": "mkdir -p dist/node_modules && npm ls --only prod --parseable | tail -n +2 | xargs -I % cp -r % dist/node_modules",
     "zip": "zip -r -j build.zip dist/*",
+    "lint": "yarn eslint --fix",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:ci": "yarn test --coverage",
     "test:unit": "yarn test --watch -c jest-unit-config.js",
