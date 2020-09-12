@@ -1,23 +1,12 @@
 import { Handler } from 'aws-lambda'
-import * as Sentry from '@sentry/node'
+import * as Sentry from '@sentry/serverless'
 
 Sentry.init({
-  dsn: ''
+  dsn: '',
+  environment: process.env.NODE_ENV
 })
 
-function sentryHandler (lambdaHandler) {
-  return async event => {
-    try {
-      return lambdaHandler(event)
-    } catch (e) {
-      Sentry.captureException(e)
-      await Sentry.flush(2000)
-      return e
-    }
-  }
-}
-
-export const handler: Handler = sentryHandler(async (event: any): Promise<any> => {
+export const main: Handler = async (event: any): Promise<any> => {
   const response = {
     statusCode: 200,
     body: JSON.stringify(
@@ -33,4 +22,8 @@ export const handler: Handler = sentryHandler(async (event: any): Promise<any> =
   return await new Promise((resolve) => {
     resolve(response)
   })
+}
+
+export const handler: Handler = Sentry.AWSLambda.wrapHandler(main, {
+  captureTimeoutWarning: false
 })
