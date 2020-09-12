@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { handler } from './src/index'
 
 async function run (): Promise<void> {
