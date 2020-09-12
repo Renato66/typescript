@@ -3,6 +3,12 @@
   "exclude": [
     "**/*.spec.ts",
     "**/*.test.ts",
-    "**/test/**"
-  ]
+    "**/test/**",
+    "dev.ts"
+  ],
+  "compilerOptions": {
+    "sourceMap": true,
+    "inlineSources": true,
+    "sourceRoot": "/"
+  }
 }
