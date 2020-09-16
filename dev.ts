@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { handler } from './src/index'
+import { handler } from './index'
 
 async function run (): Promise<void> {
   const body = JSON.stringify({
