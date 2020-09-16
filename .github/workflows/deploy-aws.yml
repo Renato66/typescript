@@ -1,7 +1,8 @@
 name: Upload to AWS
 
 on:
-  [release]
+  release:
+    types: [published]
     
 jobs:
   build:
