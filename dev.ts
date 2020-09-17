@@ -1,5 +1,9 @@
 import 'dotenv/config'
 import { handler } from './index'
+import context = require('aws-lambda-mock-context')
+const ctx = context({
+  timeout: 60
+})
 
 async function run (): Promise<void> {
   const body = JSON.stringify({
@@ -9,7 +13,7 @@ async function run (): Promise<void> {
     body
   }
   try {
-    const result = await handler(event, null, null)
+    const result = await handler(event, ctx, null)
     return result
   } catch (error) {
     return error
@@ -19,4 +23,6 @@ async function run (): Promise<void> {
 run().then(
   (result) => { console.log(result) },
   (result) => { console.log(result) }
-)
+).finally(() => {
+  process.exit()
+})
