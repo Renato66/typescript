@@ -10,6 +10,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: set-env
+      run: echo ::set-env name=TAG::$(echo ${GITHUB_REF:10})
     - name: Create Sentry release
       uses: getsentry/action-release@v1
       env:
@@ -17,4 +19,4 @@ jobs:
         SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
         SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
       with:
-        environment: production
+        environment: "production"
