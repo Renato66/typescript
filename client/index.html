@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typescript template</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@2.3.14/dist/vuetify.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+  <link rel="shortcut icon"
+    href="https://www.typescriptlang.org/icons/icon-48x48.png?v=e0cca9b778c3248c7434bc3c68c0e8b2" type="image/x-icon">
+</head>
+
+<body>
+  <div id="app">
+    <v-app id="inspire">
+      <v-snackbar v-model="snackbar" absolute top right color="success">
+        <span>Success</span>
+      </v-snackbar>
+      <v-snackbar v-model="snackbarError" absolute top right color="error">
+        <span>Error</span>
+      </v-snackbar>
+      <v-row justify="center">
+        <v-col cols="12" sm="10" md="8" lg="6">
+          <v-card ref="form">
+            <v-card-text>
+              <v-textarea label="Payload" auto-grow outlined hide-details rows="3" v-model="payload" row-height="15">
+              </v-textarea>
+              <v-flex class="text-right">
+                <v-btn class="text-none my-3" :loading="loading" color="primary" @click="submitForm">
+                  Send
+                </v-btn>
+              </v-flex>
+            </v-card-text>
+          </v-card>
+          <v-card v-if="response" class="grey lighten-3 pa-5 pt-8 mt-8">
+            <div class=" red--text lighten-2" style="    position: absolute;
+      top: 5px;
+      left: 10px;
+      font-size: 12px;">
+              Response
+            </div>
+            <pre style="white-space: pre-wrap;">{{ response }}</pre>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-app>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.3.14/dist/vuetify.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: () => ({
+        loading: false,
+        snackbar: false,
+        snackbarError: false,
+        response: null,
+        payload: `{
+  "test": "testing"
+}`
+      }),
+      methods: {
+        async submitForm() {
+          try {
+            this.loading = true
+            const response = await fetch('/.netlify/functions/index', {
+              method: 'POST',
+              mode: 'cors',
+              cache: 'no-cache',
+              credentials: 'same-origin',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              redirect: 'follow',
+              referrerPolicy: 'no-referrer',
+              body: this.payload
+            });
+            if (!response.ok) {
+              console.log(response)
+              return this.response = `Error status: ${response.status}`
+            }
+            this.response = await response.json()
+
+            this.snackbar = true
+          } catch (err) {
+            this.snackbarError = true
+            this.response = err
+          } finally {
+            this.loading = false
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
